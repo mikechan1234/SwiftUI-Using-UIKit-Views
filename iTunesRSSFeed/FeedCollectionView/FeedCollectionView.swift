@@ -18,15 +18,31 @@ struct FeedCollectionView: UIViewRepresentable {
 	@Binding var items: [FeedItem]
 	
 	private(set) var collectionView: UICollectionView!
-	
+		
 	func makeUIView(context: Context) -> UICollectionView {
 		
-		let collectionView = UICollectionView()
 		let flowLayout = UICollectionViewFlowLayout()
+		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
 		
-		collectionView.collectionViewLayout = flowLayout
+		collectionView.backgroundColor = .clear
 		collectionView.register(UINib(nibName: FeedItemCollectionViewCell.reuseIdentifier, bundle: nil), forCellWithReuseIdentifier: FeedItemCollectionViewCell.reuseIdentifier)
 		collectionView.delegate = context.coordinator
+		
+		let dataSource = UICollectionViewDiffableDataSource<FeedCollectionViewSection, FeedItem>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, item) -> UICollectionViewCell? in
+			
+			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeedItemCollectionViewCell.reuseIdentifier, for: indexPath) as? FeedItemCollectionViewCell else {
+				
+				return nil
+				
+			}
+			
+			cell.configure(using: item)
+			
+			return cell
+						
+		})
+		
+		context.coordinator.dataSource = dataSource
 		
 		return collectionView
 		
@@ -34,18 +50,13 @@ struct FeedCollectionView: UIViewRepresentable {
 	
 	func updateUIView(_ uiView: UICollectionView, context: Context) {
 		
-		var currentSnapshot = NSDiffableDataSourceSnapshot<FeedCollectionViewSection, FeedItem>()
-		
-		currentSnapshot.appendSections([.main])
-		currentSnapshot.appendItems(items, toSection: .main)
-
-		context.coordinator.dataSource.apply(currentSnapshot, animatingDifferences: false)
+		context.coordinator.applySnapshot(using: items, animated: false)
 		
 	}
 	
 	func makeCoordinator() -> FeedCoordindator {
 		
-		FeedCoordindator(self)
+		FeedCoordindator()
 		
 	}
 	
@@ -53,9 +64,12 @@ struct FeedCollectionView: UIViewRepresentable {
 
 struct FeedCollectionView_Previews: PreviewProvider {
 	
-	static let binding = Binding<[FeedItem]>.constant([])
-
+	static let binding = Binding<[FeedItem]>.constant([.generate(), .generate(), .generate()])
+	
     static var previews: some View {
-		FeedCollectionView(items: binding)
+		
+		return FeedCollectionView(items: binding)
+		
     }
+	
 }

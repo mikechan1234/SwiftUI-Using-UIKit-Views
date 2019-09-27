@@ -15,10 +15,16 @@ class FeedItemCollectionViewCell: UICollectionViewCell {
 	@IBOutlet weak var imageView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var artistNameLabel: UILabel!
-	
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
+}
+
+extension FeedItemCollectionViewCell {
+	
+	func configure(using feedItem: FeedItem) {
+		
+		titleLabel.text = feedItem.name
+		artistNameLabel.text = feedItem.artistName
+		
+	}
+	
 }

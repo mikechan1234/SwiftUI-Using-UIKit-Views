@@ -15,3 +15,14 @@ struct Genre: Codable {
 	let url: URL
 	
 }
+
+//MARK: Generate
+extension Genre {
+	
+	static func generate() -> Genre {
+		
+		Genre(genreId: .randomAlphaNumericString(length: 20), name: .randomAlphaNumericString(length: 10), url: URL(string: "https://google.com")!)
+		
+	}
+	
+}

@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import Combine
 
 class ContentViewModel: ObservableObject {
 	
 	let urlSession = URLSession(configuration: .default)
-	@Published var items: [FeedItem] = []
+	@Published var items: [FeedItem] = [.generate()]
 	
 }
 
@@ -27,18 +28,18 @@ extension ContentViewModel {
 			
 			data
 			
-		}.tryMap { (data) -> Feed in
+		}.tryMap { (data) -> iTunesRSS in
 
 			let jsonDecoder = JSONDecoder()
 			jsonDecoder.dateDecodingStrategy = .custom(JSONDecoder.DateDecodingStrategy.feed)
 			
-			return try jsonDecoder.decode(Feed.self, from: data)
+			return try jsonDecoder.decode(iTunesRSS.self, from: data)
 
-		}.map { (feed) -> [FeedItem] in
+		}.map { (rss) -> [FeedItem] in
 			
-			feed.results
+			rss.feed.results
 			
-		}.append(items).sink(receiveCompletion: { (completion) in
+		}.receive(on: DispatchQueue.main).sink(receiveCompletion: { (completion) in
 			
 			switch completion {
 				
@@ -52,7 +53,7 @@ extension ContentViewModel {
 			
 		}) {[unowned self] (items) in
 			
-			self.items = items
+			self.items.append(contentsOf: items)
 			
 		}
 		

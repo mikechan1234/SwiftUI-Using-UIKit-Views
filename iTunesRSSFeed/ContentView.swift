@@ -14,9 +14,14 @@ struct ContentView: View {
 	
     var body: some View {
 		
-		FeedCollectionView(items: $viewModel.items)
+		FeedCollectionView(items: $viewModel.items).navigationBarTitle("Music Feed").onAppear {
+			
+			self.viewModel.getFeed()
+			
+		}
 		
     }
+	
 }
 
 struct ContentView_Previews: PreviewProvider {

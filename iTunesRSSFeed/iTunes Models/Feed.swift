@@ -72,6 +72,7 @@ struct Feed: Codable, Identifiable {
 	
 }
 
+//MARK: Hashable
 extension Feed: Hashable {
 	
 	func hash(into hasher: inout Hasher) {
@@ -83,6 +84,20 @@ extension Feed: Hashable {
 	static func == (lhs: Feed, rhs: Feed) -> Bool {
 		
 		lhs.id == rhs.id
+		
+	}
+	
+}
+
+extension Feed {
+		
+	static func generate() -> Feed {
+		
+		Feed(title: "Test", id: URL(string: "https://google.com")!, author: .generate(), links: [], copyright: .randomAlphaNumericString(), country: .randomAlphaNumericString(length: 4), icon: URL(string: "https://google.com")!, updated: Date(), results: (0..<10).map {_ in
+			
+			FeedItem.generate()
+						
+		})
 		
 	}
 	

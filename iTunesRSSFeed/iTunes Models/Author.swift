@@ -15,3 +15,14 @@ struct Author: Codable {
 	
 }
 
+//MARK: Generate
+extension Author {
+	
+	static func generate() -> Author {
+		
+		Author(name: .randomAlphaNumericString(length: 10), uri: URL(string: "https://google.com")!)
+		
+	}
+	
+}
+
