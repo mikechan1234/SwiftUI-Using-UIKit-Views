@@ -12,7 +12,7 @@ import Combine
 class ContentViewModel: ObservableObject {
 	
 	let urlSession = URLSession(configuration: .default)
-	@Published var items: [FeedItem] = [.generate()]
+	@Published var items: [FeedItem] = []
 	
 }
 

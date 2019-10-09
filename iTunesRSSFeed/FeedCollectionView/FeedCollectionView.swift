@@ -21,12 +21,12 @@ struct FeedCollectionView: UIViewRepresentable {
 		
 	func makeUIView(context: Context) -> UICollectionView {
 		
-		let flowLayout = UICollectionViewFlowLayout()
-		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+		let layout = makeLayout()
+		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		
+		collectionView.delegate = context.coordinator
 		collectionView.backgroundColor = .clear
 		collectionView.register(UINib(nibName: FeedItemCollectionViewCell.reuseIdentifier, bundle: nil), forCellWithReuseIdentifier: FeedItemCollectionViewCell.reuseIdentifier)
-		collectionView.delegate = context.coordinator
 		
 		let dataSource = UICollectionViewDiffableDataSource<FeedCollectionViewSection, FeedItem>(collectionView: collectionView, cellProvider: { (collectionView, indexPath, item) -> UICollectionViewCell? in
 			
@@ -57,6 +57,21 @@ struct FeedCollectionView: UIViewRepresentable {
 	func makeCoordinator() -> FeedCoordindator {
 		
 		FeedCoordindator()
+		
+	}
+	
+	private func makeLayout() -> UICollectionViewCompositionalLayout {
+		
+		let size = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+		let item = NSCollectionLayoutItem(layoutSize: size)
+		
+		let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(90))
+		let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+		
+		let section = NSCollectionLayoutSection(group: group)
+		section.interGroupSpacing = 10
+		
+		return UICollectionViewCompositionalLayout(section: section)
 		
 	}
 	

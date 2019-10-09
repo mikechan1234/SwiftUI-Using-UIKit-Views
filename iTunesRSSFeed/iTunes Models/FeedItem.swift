@@ -64,7 +64,7 @@ extension FeedItem {
 	
 	static func generate() -> FeedItem {
 		
-		FeedItem(artistName: .randomAlphaNumericString(length: 20), id: .randomAlphaNumericString(length: 20), releaseDate: Date(), name: .randomAlphaNumericString(length: 10), collectionName: .randomAlphaNumericString(), kind: .randomAlphaNumericString(length: 5), copyright: .randomAlphaNumericString(length: 10), artistId: .randomAlphaNumericString(length: 20), artistURL: URL(string: "https://google.com")!, artworkURL100: URL(string: "https://google.com")!, genres: [], url: URL(string: "https://google.com")!)
+		FeedItem(artistName: .randomAlphaNumericString(length: 20), id: .randomAlphaNumericString(length: 20), releaseDate: Date(), name: .randomAlphaNumericString(length: 10), collectionName: .randomAlphaNumericString(), kind: .randomAlphaNumericString(length: 5), copyright: .randomAlphaNumericString(length: 10), artistId: .randomAlphaNumericString(length: 20), artistURL: URL(string: "https://google.com")!, artworkURL100: URL(string: "http://jackiehawkins.com/wp-content/uploads/2014/03/Screen-Shot-2014-03-04-at-15.54.39.png")!, genres: [], url: URL(string: "https://google.com")!)
 		
 	}
 	
