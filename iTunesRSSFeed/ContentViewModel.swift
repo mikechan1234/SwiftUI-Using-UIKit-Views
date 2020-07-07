@@ -13,6 +13,8 @@ class ContentViewModel: ObservableObject {
 	
 	let urlSession = URLSession(configuration: .default)
 	@Published var items: [FeedItem] = []
+	var cancellable: AnyCancellable?
+
 	
 }
 
@@ -24,7 +26,7 @@ extension ContentViewModel {
 			return
 		}
 		
-		_ = urlSession.dataTaskPublisher(for: url).map { (data, response) -> Data in
+		cancellable = urlSession.dataTaskPublisher(for: url).map { (data, response) -> Data in
 			
 			data
 			
